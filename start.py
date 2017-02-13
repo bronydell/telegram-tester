@@ -3,6 +3,10 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Callb
 import saver
 import answers
 from actions import super_actions
+import sys
+# sys.setdefaultencoding() does not exist, here!
+
+sys.setdefaultencoding('UTF8')
 
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                   level=logging.DEBUG)
