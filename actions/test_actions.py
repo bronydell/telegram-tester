@@ -22,7 +22,7 @@ def getTests():
 
 
 def getTest(file):
-    with open(file) as ff:
+    with open(file, encoding='UTF-8') as ff:
         js = json.loads(ff.read())
         js['id'] = ff.name
         return js
