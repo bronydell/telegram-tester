@@ -1,0 +1,112 @@
+{
+  "default_menu": "menu",
+  "system_messages": {
+    "not_admin": "Вы не адміністратар. Сюды нельга",
+    "json_bot_not_valid": "Памылка. Файл аформлены няправільна. Глядзіце json дакументацыю і праверце файл праз сералізатары",
+    "json_bot_valid": "Файл быў захаваны. Настройкі бота абноўлены",
+    "admin_info": "Калі ў вас ёсць якія-небудзь праблемы, то напішыце @Bronydell",
+    "pick_test": "Выберыце зацікаўлены тэст ці напішыце яго ID",
+    "comp_test_pick": "Спіс пройдзеных тэстаў",
+    "question_solved": "Вы адказалі на гэта пытанне",
+    "report_author": "Карыстальнік @{} прайшоў ваш тэст '{}' на {} з {}",
+    "test_details": "Назва: {}\nАўтар: {}\nАпісанне: {}",
+    "test_details_results": "Назва: {}\nАўтар: {}\nВаш вынік: {}/{}\nАпісанне: {}",
+    "back_menu": "Назад у меню",
+    "back_to_tests": "Назад у спіс тэстаў",
+    "run_test": "Прайсці тэст",
+    "pick_lang": "Выберыце мову",
+    "test_solved": "Вы прайшлі тэст. Ваш вынік {}/{}"
+  },
+  "menu":{
+    "message": "Выберы пункт меню",
+    "keyboard":[
+      {
+        "text": "Прайсці тэст",
+        "action": "test"
+      },
+      {
+        "text": "Праглядзець пройдзеныя тэсты",
+        "action": "completed_tests"
+      },
+      {
+        "text": "Звязацца з адміністратарам",
+        "action": "contact_admin"
+      },
+      {
+        "text": "Змяніць мову",
+        "action": "change_language"
+      },
+      {
+        "text": "Адмінка",
+        "action": "admin",
+        "admin_only": true
+      }
+    ]
+  },
+  "send_msg_all": {
+    "message": "Увядзіце паведамленне для ўсіх карыстальнікаў:",
+    "keyboard": [
+      {
+        "text": "Назад у адмінку",
+        "action": "admin"
+      }
+    ]
+  },
+  "edit_prefs": {
+    "message": "Адрэдагуйце гэты файл і адкажыце паведамленнем з адрэдагаваным дакументам:",
+    "keyboard": [
+      {
+        "text": "Назад у адмінку",
+        "action": "admin"
+      }
+    ]
+  },
+  "add_admin": {
+    "message": "Увядзіце ID карыстальніка, які атрымае права адміністратара:",
+    "keyboard": [
+      {
+        "text": "Назад у адмінку",
+        "action": "admin"
+      }
+    ]
+  },
+  "del_admin": {
+    "message": "Увядзіце ID карыстальніка, які згубіць права адміністратара:",
+    "keyboard": [
+      {
+        "text": "Назад у адмінку",
+        "action": "admin"
+      }
+    ]
+  },
+  "admin_panel": {
+    "message": "Увядзіце пункт адмінкі",
+    "keyboard":[
+      {
+        "text": "Адправіць паведамленне ўсім карыстальнікам",
+        "action": "send_msg_all",
+        "admin_only": true
+      },
+      {
+        "text": "Адрэдагаваць файл фраз бота",
+        "action": "edit_prefs",
+        "admin_only": true
+      },
+      {
+        "text": "Дабавіць адміністратара",
+        "action": "add_admin",
+        "admin_only": true
+      },
+      {
+        "text": "Выдаліць адміністратара",
+        "action": "del_admin",
+        "admin_only": true
+      },
+      {
+        "text": "Назад у меню",
+        "action": "menu"
+      }
+    ]
+
+  }
+}
