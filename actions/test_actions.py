@@ -90,9 +90,6 @@ def checkAnswer(bot, update, answer):
     if getTest(filename)['questions'][question]['answer'] == getTest(filename)['questions'][question]['answers'][
         answer]:
         saver.savePref(uid, 'test {}'.format(filename), score + getTest(filename)['questions'][question]['reward'])
-        print('Правильно')
-    else:
-        print('Нет')
 
 
 def test_details(bot, update, filename, source='full'):
@@ -164,7 +161,6 @@ def nextQuestion(bot, update):
             for q in mixed_answers:
                 test_ls = np.append(test_ls,
                                     InlineKeyboardButton(text=q, callback_data='answer {}'.format(answers.index(q))))
-                print('answer {}'.format(answers.index(q)))
             markup = InlineKeyboardMarkup(np.reshape(test_ls, (-1, 1)))
 
             if update.callback_query:
