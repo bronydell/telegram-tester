@@ -20,7 +20,7 @@ def replaceSettings(bot, update, filename):
         move(filename + '.json', filename + '_old' + '.json')
         file_id = update.message.document.file_id
         bot.getFile(file_id).download(filename + '.json')
-        with open(filename + '.json', 'r') as content_file:
+        with open(filename + '.json', 'r', encoding='UTF-8') as content_file:
             if not is_json(content_file.read()):
                 move(filename + '_old' + '.json', filename + '.json')
                 bot.sendMessage(update.message.chat_id, text=settings['system_messages']['json_bot_not_valid'])

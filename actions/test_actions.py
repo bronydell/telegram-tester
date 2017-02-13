@@ -14,7 +14,7 @@ def getTests():
     files = [f for f in listdir('tests_data') if isfile(join('tests_data', f))]
     result = []
     for file in files:
-        with open('tests_data/' + file) as content_file:
+        with open('tests_data/' + file, encoding='UTF-8') as content_file:
             js = json.loads(content_file.read())
             js['id'] = content_file.name
             result.append(js)
