@@ -114,7 +114,7 @@ def test_details(bot, update, filename, source='full'):
     if testdb.getScoreForUserByID(uid, test['id'], -1) == -1 or test.get("repeatable", False):
         keyboard.insert(0, [InlineKeyboardButton(text=settings['system_messages']['run_test'],
                                                  callback_data='start_test ' + test['id'])])
-    else:
+    if testdb.getScoreForUserByID(uid, test['id'], -1) != -1:
         details = settings['system_messages']['test_details_results'].format(test['title'],
                                                                              test['author'],
                                                                              testdb.getScoreForUserByID(uid,
