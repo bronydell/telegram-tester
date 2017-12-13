@@ -110,19 +110,19 @@ def test_details(bot, update, filename, source='full'):
                               callback_data='{} {}'.format(tag, filename))]
     ]
     details = settings['system_messages']['test_details'].format(test['title'],
-                                                             test['author'], test['description'])
+                                                                 test['author'], test['description'])
     if testdb.getScoreForUserByID(uid, test['id'], -1) == -1 or test.get("repeatable", False):
         keyboard.insert(0, [InlineKeyboardButton(text=settings['system_messages']['run_test'],
                                                  callback_data='start_test ' + test['id'])])
     else:
         details = settings['system_messages']['test_details_results'].format(test['title'],
-                                                                                       test['author'],
-                                                                                       testdb.getScoreForUserByID(uid,
-                                                                                                                  test[
-                                                                                                                      'id'],
-                                                                                                                  -1),
-                                                                                       maxReward(test),
-                                                                                       test['description'])
+                                                                             test['author'],
+                                                                             testdb.getScoreForUserByID(uid,
+                                                                                                        test[
+                                                                                                            'id'],
+                                                                                                        -1),
+                                                                             maxReward(test),
+                                                                             test['description'])
 
     bot.editMessageText(chat_id=uid, message_id=update.callback_query.message.message_id,
                         text=details,
@@ -193,12 +193,11 @@ def nextQuestion(bot, update):
         else:
             score = saver.openPref(uid, 'test {}'.format(filename), 0)
             testdb.setTest(uid, score, test['id'])
-            if 'notify' in test:
-                test['author'] = test['author'][1:]
-                if test['notify'] is True and udb.getID(test['author'], -1) != -1:
-                    bot.sendMessage(chat_id=udb.getID(test['author'], None),
-                    text=settings['system_messages']['report_author'].format(update.callback_query.from_user.username,
-                                                                    test['title'], score, maxReward(test)))
+            if test.get("notify", None):
+                bot.sendMessage(chat_id=test.get("notify"),
+                                text=settings['system_messages']['report_author'].format(
+                                    update.callback_query.from_user.username,
+                                    test['title'], score, maxReward(test)))
             bot.editMessageText(chat_id=uid, message_id=update.callback_query.message.message_id,
                                 text=settings['system_messages']['test_solved'].format(score, maxReward(test)))
 
