@@ -36,10 +36,7 @@ def maxReward(test):
 
 
 def test_list(bot, update, last_one, is_update=False):
-    if update.message:
-        uid = update.message.from_user.id
-    elif update.callback_query:
-        uid = update.callback_query.from_user.id
+    uid = update.effective_user.id
     tests = getTests()
     settings = super_actions.getBotSettings(uid)
     test_ls = np.array([])
@@ -58,10 +55,7 @@ def test_list(bot, update, last_one, is_update=False):
 
 
 def completedTestList(bot, update, is_update=False):
-    if update.message:
-        uid = update.message.from_user.id
-    elif update.callback_query:
-        uid = update.callback_query.from_user.id
+    uid = update.effective_user.id
     settings = super_actions.getBotSettings(uid)
     tests_wet = testdb.getAllTestsForUID(uid)
     test_ls = np.array([])
@@ -80,7 +74,7 @@ def completedTestList(bot, update, is_update=False):
 
 
 def checkAnswer(bot, update, answer):
-    uid = update.callback_query.from_user.id
+    uid = update.effective_user.id
     test_action = udb.getUserAction(uid, 'testing 0 0').split(' ')
     action = test_action[0]
     filename = test_action[1]
@@ -93,10 +87,7 @@ def checkAnswer(bot, update, answer):
 
 
 def test_details(bot, update, filename, source='full'):
-    if update.message:
-        uid = update.message.from_user.id
-    elif update.callback_query:
-        uid = update.callback_query.from_user.id
+    uid = update.effective_user.id
     settings = super_actions.getBotSettings(uid)
     test = getTest(filename)
     tag = 'back_testlist'
@@ -130,10 +121,7 @@ def test_details(bot, update, filename, source='full'):
 
 
 def start_test(bot, update, test_file):
-    if update.message:
-        uid = update.message.from_user.id
-    elif update.callback_query:
-        uid = update.callback_query.from_user.id
+    uid = update.effective_user.id
     test = getTest(test_file)
     saver.savePref(uid, 'test {}'.format(test['id']), 0)
     udb.setUserAction(uid, 'testing {} {}'.format(test['id'], -1))
@@ -142,11 +130,7 @@ def start_test(bot, update, test_file):
 
 def nextQuestion(bot, update):
     try:
-
-        if update.message:
-            uid = update.message.from_user.id
-        elif update.callback_query:
-            uid = update.callback_query.from_user.id
+        uid = update.effective_user.id
         settings = super_actions.getBotSettings(uid)
         test_action = udb.getUserAction(uid, 'testing 0 0').split(' ')
         filename = test_action[1]

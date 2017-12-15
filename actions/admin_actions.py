@@ -42,7 +42,7 @@ def sendtoAll(bot, update, txt):
 
 
 def magic(bot, update, act):
-    uid = update.message.from_user.id
+    uid = update.effective_user.id
     settings = super_actions.getBotSettings(uid)
     if saver.isAdmin(uid):
         udb.setUserAction(uid, act)
@@ -53,7 +53,7 @@ def magic(bot, update, act):
 
 
 def editPrefs(bot, update):
-    uid = update.message.from_user.id
+    uid = update.effective_user.id
     settings = super_actions.getBotSettings(uid)
     if saver.isAdmin(uid):
         act = 'edit_prefs'

@@ -30,10 +30,7 @@ def performIt(bot, update, action):
 
 def click(bot, update):
     try:
-        if update.message:
-            uid = update.message.from_user.id
-        elif update.callback_query:
-            uid = update.callback_query.from_user.id
+        uid = update.effective_user.id
         data = update.callback_query.data
 
         if data.startswith('answer'):
@@ -77,7 +74,7 @@ def click(bot, update):
 
 def answer(bot, update):
     try:
-        uid = update.message.from_user.id
+        uid = update.effective_user.id
         settings = super_actions.getBotSettings(uid)
         act = udb.getUserAction(update.message.from_user.id, settings['default_menu'])
         udb.setUserUsername(uid, update.message.from_user.username)

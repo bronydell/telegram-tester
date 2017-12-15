@@ -17,7 +17,7 @@ def getLocale(uid):
     return saver.openPref(uid, 'locale', 'bot.json')
 
 def getLangs(bot, update):
-    uid = update.message.from_user.id
+    uid = update.effective_user.id
     menu = np.array([])
     settings = getBotSettings(uid)
     for key, value in locales.items():
@@ -49,16 +49,13 @@ def getBotSettings(uid):
 
 
 def connect(bot, update):
-    uid = update.message.from_user.id
+    uid = update.effective_user.id
     settings = getBotSettings(uid)
     bot.sendMessage(uid, text=settings['system_messages']['admin_info'])
 
 
 def menu(bot, update, id = -1):
-    if update.message:
-        uid = update.message.from_user.id
-    elif update.callback_query:
-        uid = update.callback_query.from_user.id
+    uid = update.effective_user.id
     if not id == -1:
         uid = id
     settings = getBotSettings(uid)
