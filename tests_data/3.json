@@ -2,7 +2,8 @@
   "title": "Тест по тестированию ПО",
   "description": "Этот тест проверит ваши знания по тестированию ПО",
   "author": "@Olga_Bel",
-  "notify": 254805705,
+  "notify": 3527572,
+  "detailed": true,
   "repeatable": true,
   "questions": [
     {
