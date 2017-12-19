@@ -1,7 +1,7 @@
 from os import listdir
 from pony import orm
 from db import User, Results
-from telegram import InlineKeyboardMarkup, InlineKeyboardButton, Bot, Update
+from telegram import InlineKeyboardMarkup, InlineKeyboardButton, Bot, Update, error
 from os.path import isfile, join
 from actions import super_actions
 import numpy as np
@@ -47,6 +47,7 @@ def get_test(file):
         js = json.loads(ff.read())
         js['id'] = ff.name
         return js
+
 
 def max_reward(test):
     """Calculate maximal reward
@@ -148,7 +149,7 @@ def completed_test_list(bot, update, is_update=False, n_cols=1):
 
 
 @orm.db_session
-def check_answer(bot, update, answer, question_num):
+def check_answer(bot, update, answer, question_num, custom_text = None):
     """Check user's answer. This method writes results in database.
 
         Parameters
@@ -177,11 +178,12 @@ def check_answer(bot, update, answer, question_num):
         return False
     result = Results.get(uid=user.id, test_id=test['id'])
     score = result.results.get("score", 0)
-    if test['questions'][question]['answer'] == test['questions'][question]['answers'][answer]:
+    answer = custom_text if custom_text else test['questions'][question]['answers'][answer]
+    if test['questions'][question]['answer'] == answer:
         result.results['score'] = score + test['questions'][question]['reward']
 
     result.results['questions'][str(question)] = {
-        "answer": test['questions'][question]['answers'][answer],
+        "answer": answer,
         "timer": time.time()
     }
     return True
@@ -305,7 +307,8 @@ def next_question(bot, update, n_cols=1, finish = False):
     if question < len(test['questions']) and not finish:
         answers = test['questions'][question]['answers']
         mixed_answers = list(answers)
-        random.shuffle(mixed_answers)
+        if test.get('shuffle', True):
+            random.shuffle(mixed_answers)
         for q in mixed_answers:
             options.append(InlineKeyboardButton(text=q,
                                                 callback_data='answer {} {}'.format(answers.index(q), question)))
@@ -339,9 +342,20 @@ def next_question(bot, update, n_cols=1, finish = False):
     else:
         result = Results.get(uid=user.id, test_id=test['id'])
         score = result.results['score']
+        try:
+            if max_reward(test) != 0:
+                bot.editMessageText(chat_id=user.id, message_id=update.effective_message.message_id,
+                                    text=settings['system_messages']['test_solved'].format(score, max_reward(test)))
+            else:
+                bot.editMessageText(chat_id=user.id, message_id=update.effective_message.message_id,
+                                    text=settings['system_messages']['thanks'])
+        except error.BadRequest as tg:
+            if max_reward(test) != 0:
+                bot.sendMessage(chat_id=user.id,
+                                text=settings['system_messages']['test_solved'].format(score, max_reward(test)))
+            else:
+                bot.sendMessage(chat_id=user.id, text=settings['system_messages']['thanks'])
 
-        bot.editMessageText(chat_id=user.id, message_id=update.effective_message.message_id,
-                            text=settings['system_messages']['test_solved'].format(score, max_reward(test)))
         if test.get("notify", None):
             details = ""
             logging.debug("User {} finished test {}. Notifying owner {}".format(user.id, filename, test.get("notify")))
@@ -353,13 +367,14 @@ def next_question(bot, update, n_cols=1, finish = False):
                     details += "{}. {} ({})\n".format(int(key) + 1, value['answer'],
                                                       datetime.datetime.fromtimestamp(
                                                           int(value['timer'])).strftime('%Y-%m-%d %H:%M:%S'))
-            bot.sendMessage(chat_id=test.get("notify"),
-                            text=settings['system_messages']['report_author'].format(
-                                user.username,
-                                user.name,
-                                test['title'],
-                                score,
-                                max_reward(test)) + details)
+
+                bot.sendMessage(chat_id=test.get("notify"),
+                                text=settings['system_messages']['report_author'].format(
+                                    user.username,
+                                    user.name,
+                                    test['title'],
+                                    score,
+                                    max_reward(test)) + details)
 
         super_actions.default_menu(bot, update)
     return True

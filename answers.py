@@ -142,3 +142,10 @@ def answer(bot, update):
         if Admin.exists(id=int(update.message.text)):
             Admin.get(id=int(update.message.text)).delete()
         admin_actions.admin_menu(bot, update, 'admin_panel')
+    elif act.startswith('testing'):
+            answ = user.action.split(' ')
+            test = tests.get_test(answ[1])
+            if test.get('custom', False):
+                if tests.check_answer(bot, update, test['id'], int(answ[2]), custom_text=update.effective_message.text):
+                    tests.next_question(bot, update)
+

@@ -1,6 +1,7 @@
 # telegram-tester
-Just a simple tester for python
+Just a simple tester for python. Feel free to use it
 
-Dependences:
+
+
+Dependencies:
 * python-telegram-bot
-* numpy
