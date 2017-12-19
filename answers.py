@@ -74,8 +74,8 @@ def def_menu(bot, update):
     if not User.exists(id=uid):
         user = User(id=uid,
                     action=super_actions.get_bot_settings("bot.json")['default_menu'],
-                    name=update.effective_user.first_name + " "+
-                    update.effective_user.last_name if update.effective_user.last_name else "",
+                    name=update.effective_user.first_name + " " +
+                    (update.effective_user.last_name if update.effective_user.last_name else ""),
                     username=update.effective_user.username if update.effective_user.username else "",
                     lang_file="bot.json",
                     info={})
@@ -103,8 +103,8 @@ def answer(bot, update):
     if not User.exists(id=uid):
         user = User(id=uid,
                     action=super_actions.get_bot_settings("bot.json")['default_menu'],
-                    name=update.effective_user.first_name +
-                    update.effective_user.last_name if update.effective_user.last_name else "",
+                    name=update.effective_user.first_name + " " +
+                    (update.effective_user.last_name if update.effective_user.last_name else ""),
                     username=update.effective_user.username if update.effective_user.username else "",
                     lang_file="bot.json",
                     info={})
@@ -112,8 +112,7 @@ def answer(bot, update):
         user = User[uid]
     # Update user's info like name or username
     user.username = update.effective_user.username if update.effective_user.username else ""
-    user.name = update.effective_user.first_name + " " + update.effective_user.last_name \
-        if update.effective_user.last_name else ""
+    user.name = update.effective_user.first_name + " " + (update.effective_user.last_name if update.effective_user.last_name else "")
     settings = super_actions.get_bot_settings(user.lang_file)
     act = user.action
 

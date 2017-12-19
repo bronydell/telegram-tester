@@ -140,8 +140,8 @@ def default_menu(bot, update, uid=-1):
     if not User.exists(id=uid):
         user = User(id=uid,
                     action=get_bot_settings("bot.json")['default_menu'],
-                    name=update.effective_user.first_name + " "+
-                    update.effective_user.last_name if update.effective_user.last_name else "",
+                    name=update.effective_user.first_name + " " +
+                    (update.effective_user.last_name if update.effective_user.last_name else ""),
                     username=update.effective_user.username if update.effective_user.username else "",
                     lang_file="bot.json",
                     info={})
